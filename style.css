@@ -1,5 +1,5 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: Arial, sans-serif; background-color: #992222; color: #333; }
+body { min-height: 100vh; display: flex; flex-direction: column; font-family: Arial, sans-serif; background-color: #992222; color: #333; }
 
 .site-header { background: #ffcc00; color: #fff; padding: 20px 0; }
 .header-container { max-width: 1200px; margin: auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
@@ -78,7 +78,7 @@ body { font-family: Arial, sans-serif; background-color: #992222; color: #333; }
 .nav-links li a:hover,
 .nav-links li a:focus { background: rgba(255,255,255,0.18); }
 
-.main-content { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+.main-content { flex: 1; width: 100%; max-width: 1200px; margin: 40px auto; padding: 0 20px; }
 .welcome-section { text-align: center; margin-bottom: 50px; color: #fff; }
 
 .site-header .logo-section img { height: 200px; }
@@ -176,6 +176,67 @@ body { font-family: Arial, sans-serif; background-color: #992222; color: #333; }
     width: 100%;
     height: 100%;
     border: 0;
+}
+
+.site-footer {
+    background: #ffcc00;
+    border-top: 5px solid #992222;
+    padding: 18px 20px;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 36px;
+}
+
+.footer-logo {
+    flex-shrink: 0;
+}
+
+.footer-logo img {
+    display: block;
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+}
+
+.footer-section {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 150px;
+}
+
+.footer-section h2 {
+    color: #992222;
+    font-size: 1rem;
+    margin-bottom: 3px;
+}
+
+.footer-section a {
+    color: #000;
+    text-decoration: none;
+}
+
+.footer-section a:hover,
+.footer-section a:focus {
+    color: #992222;
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .footer-container {
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .footer-logo {
+        width: 100%;
+    }
 }
 
 .arbetare-group + .arbetare-group { margin-top: 32px; }
