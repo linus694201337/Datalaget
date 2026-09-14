@@ -1,5 +1,4 @@
 const arbetareData = [
-        { namn: "test testsson", datum: "14/9 2026 - "},
         { namn: "Anton Kronqvist", datum: "28/3 2026 - "},
         { namn: "Linus Wohrne", datum: "14/12 2025 -"},
         { namn: "Kasper Wieser", datum: "14/12 2025 -"},
