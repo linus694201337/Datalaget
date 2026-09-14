@@ -86,6 +86,39 @@ document.addEventListener("DOMContentLoaded", () => {
         return parseDate(part === "start" ? startdatum : slutdatum);
     };
 
+    const getCompletedYears = (datum) => {
+        const startDate = getDate(datum, "start");
+        const endDate = getDate(datum, "slut") || new Date();
+
+        if (!startDate || endDate < startDate) return 0;
+
+        let years = endDate.getFullYear() - startDate.getFullYear();
+        const anniversary = new Date(
+            endDate.getFullYear(),
+            startDate.getMonth(),
+            startDate.getDate()
+        );
+
+        if (endDate < anniversary) years -= 1;
+
+        return Math.max(0, years);
+    };
+
+    const getMilestone = (datum) => {
+        const completedYears = Math.min(getCompletedYears(datum), 5);
+
+        if (completedYears === 0) return null;
+
+        const imageName = completedYears === 5
+            ? "5-1-1024x1024.png"
+            : `${completedYears}år-1024x1024.png`;
+
+        return {
+            years: completedYears,
+            imagePath: `bilder/${imageName}`
+        };
+    };
+
     const sortByDate = (arbetare, part, fallbackPart = null) => arbetare
         .map((person, index) => ({
             person,
@@ -126,8 +159,12 @@ document.addEventListener("DOMContentLoaded", () => {
         arbetare.forEach(({ namn, datum, roll }) => {
             const card = document.createElement("article");
             card.className = "arbetare-card";
+            const milestone = getMilestone(datum);
             card.innerHTML = `
-                <h3>${namn}</h3>
+                <div class="arbetare-card-header">
+                    <h3>${namn}</h3>
+                    ${milestone ? `<img class="arbetare-milestone" src="${milestone.imagePath}" alt="${milestone.years} år som arbetare">` : ""}
+                </div>
                 <p>${datum}</p>
                 ${roll ? `<p class="arbetare-roll">${roll}</p>` : ""}
             `;

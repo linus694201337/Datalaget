@@ -252,9 +252,35 @@ body { min-height: 100vh; display: flex; flex-direction: column; font-family: Ar
     border-left: 4px solid #ffcc00;
     background: #fafafa;
 }
-.arbetare-card h3 { margin-bottom: 6px; font-size: 1rem; }
+.arbetare-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+.arbetare-card h3 {
+    flex: 1;
+    margin-bottom: 6px;
+    font-size: 1rem;
+}
 .arbetare-card p { color: #666; font-size: 0.9rem; }
 .arbetare-card .arbetare-roll { margin-top: 4px; font-weight: bold; }
+.arbetare-milestone {
+    display: block;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    object-fit: contain;
+}
+
+@media (min-width: 900px) {
+    .arbetare-box {
+        max-width: 1200px;
+    }
+
+    .arbetare-list {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+}
 
 .tabs {
     display: flex;
