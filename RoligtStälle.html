@@ -451,9 +451,13 @@
 		const spinButton = document.getElementById("spin-button");
 		const dailyPot = 1000;
 		const balanceStorageKey = "datalaget-roulette-daily-pot";
-		const today = new Date().toISOString().slice(0, 10);
+		const todayDate = new Date();
+		const today = `${todayDate.getFullYear()}-${String(todayDate.getMonth() + 1).padStart(2, "0")}-${String(todayDate.getDate()).padStart(2, "0")}`;
 		const savedBalance = JSON.parse(localStorage.getItem(balanceStorageKey) || "null");
-		let balance = savedBalance?.date === today && Number.isFinite(savedBalance.balance) ? savedBalance.balance : dailyPot;
+		const lastClaimDate = savedBalance?.lastClaimDate || savedBalance?.date;
+		const lastClaim = lastClaimDate ? new Date(`${lastClaimDate}T00:00:00`) : null;
+		const daysSinceClaim = lastClaim && !Number.isNaN(lastClaim.getTime()) ? Math.max(0, Math.floor((todayDate - lastClaim) / 86400000)) : 0;
+		let balance = Number.isFinite(savedBalance?.balance) ? savedBalance.balance + daysSinceClaim * dailyPot : dailyPot;
 		let chipValue = 10;
 		let betMode = "add";
 		const bets = new Map();
@@ -461,7 +465,7 @@
 		const spinDuration = 11000;
 
 		function saveBalance() {
-			localStorage.setItem(balanceStorageKey, JSON.stringify({ date: today, balance }));
+			localStorage.setItem(balanceStorageKey, JSON.stringify({ lastClaimDate: today, balance }));
 		}
 
 		const caseTargetIndex = 55;
@@ -497,6 +501,7 @@
 		}
 
 		balanceElement.textContent = formatMoney(balance);
+		saveBalance();
 		buildCase();
 
 		for (let number = 1; number <= 36; number += 1) {
