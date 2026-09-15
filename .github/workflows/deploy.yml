@@ -27,5 +27,5 @@ jobs:
           username: ${{ secrets.SFTP_USERNAME }}
           password: ${{ secrets.SFTP_PASSWORD }}
           local_path: ./deploy/*
-          remote_path: ${{ secrets.SFTP_REMOTE_PATH }}
+          remote_path: /ludd/www/linus69420/htdocs/DataLaget/
           sftp_only: true
