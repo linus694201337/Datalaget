@@ -1,8 +1,8 @@
 const arbetareData = [
         { namn: "Anton Kronqvist", datum: "28/03 2026 -"},
-        { namn: "Linus Wohrne", datum: "14/12 2025 -"},
-        { namn: "Kasper Wieser", datum: "14/12 2025 -"},
-        { namn: "Emma Edh", datum: "14/12 2025 -"},
+        { namn: "Linus Wohrne", datum: "13/12 2025 -"},
+        { namn: "Kasper Wieser", datum: "13/12 2025 -"},
+        { namn: "Emma Edh", datum: "13/12 2025 -"},
         { namn: "Sebastian ”Zleb” Samuelsson", datum: "2025 - ", roll: "VLC: 2026 -"},
         { namn: "Hugo ”Plåten” Söderström", datum: "2025 - "},
         { namn: "Erik ”Bosse” Boson", datum: "04/04 2019 - 18/01 2025", roll: "LC: 2019 -2025"},
