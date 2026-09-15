@@ -21,7 +21,7 @@ jobs:
           cp -r bilder ljud deploy/
 
       - name: Install SFTP client
-        run: sudo apt-get update && sudo apt-get install -y sshpass
+        run: sudo apt-get install -y sshpass
 
       - name: Upload via SFTP
         env:
