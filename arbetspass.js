@@ -48,8 +48,7 @@ arbetspassData["23-24"] = {
         "Pre-data30 15/5",
         "Nattklubb 23/5",
         "Sommarpub 5/6",
-        "Tentaröj",
-        "Fejden"
+        "Tentaröj"
     ]
 };
 
