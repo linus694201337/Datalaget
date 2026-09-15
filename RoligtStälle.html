@@ -179,7 +179,7 @@
 		}
 
 		.case-card.red { background: linear-gradient(145deg, #d14d58, #84202e); }
-		.case-card.black { background: linear-gradient(145deg, #3e3d45, #111116); }
+		.case-card.black { background: linear-gradient(145deg, #f0c75e, #b98522); color: var(--wine-deep); }
 		.case-card.green { background: linear-gradient(145deg, #1e9775, #07513f); }
 
 		.result { min-height: 52px; color: var(--muted); }
@@ -235,6 +235,7 @@
 			font-size: 0.78rem;
 		}
 		.bet-button.red { background: var(--red); }
+		.bet-button.black-number { background: var(--gold); color: var(--wine-deep); }
 		.bet-button.zero { grid-column: span 13; background: var(--felt-dark); }
 		.bet-button.selected { outline: 3px solid var(--gold-light); outline-offset: -3px; }
 		.bet-button:hover, .bet-button:focus-visible { filter: brightness(1.25); }
@@ -243,7 +244,7 @@
 		.outside-bets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 4px; }
 		.outside-bets .bet-button { min-height: 45px; background: var(--felt-dark); font-size: 0.7rem; text-transform: uppercase; }
 		.outside-bets .red-bet { background: var(--red); }
-		.outside-bets .black-bet { background: var(--black); }
+		.outside-bets .black-bet { background: var(--gold); color: var(--wine-deep); }
 
 		.spin-button {
 			width: 100%;
@@ -425,7 +426,7 @@
 				</div>
 				<div class="outside-bets">
 					<button class="bet-button red-bet" type="button" data-bet="red">Rött</button>
-					<button class="bet-button black-bet" type="button" data-bet="black">Svart</button>
+					<button class="bet-button black-bet" type="button" data-bet="black">Gult</button>
 					<button class="bet-button" type="button" data-bet="even">Jämnt</button>
 					<button class="bet-button" type="button" data-bet="odd">Udda</button>
 					<button class="bet-button" type="button" data-bet="low">1–18</button>
@@ -506,7 +507,7 @@
 
 		for (let number = 1; number <= 36; number += 1) {
 			const button = document.createElement("button");
-			button.className = `bet-button ${redNumbers.has(number) ? "red" : ""}`;
+			button.className = `bet-button ${redNumbers.has(number) ? "red" : "black-number"}`;
 			button.type = "button";
 			button.dataset.bet = number;
 			button.textContent = number;
@@ -518,7 +519,7 @@
 		}
 
 		function betLabel(bet) {
-			return bet === "red" ? "rött" : bet === "black" ? "svart" : bet === "even" ? "jämnt" : bet === "odd" ? "udda" : bet === "low" ? "1–18" : bet === "high" ? "19–36" : bet;
+			return bet === "red" ? "rött" : bet === "black" ? "gult" : bet === "even" ? "jämnt" : bet === "odd" ? "udda" : bet === "low" ? "1–18" : bet === "high" ? "19–36" : bet;
 		}
 
 		function totalBets() {
