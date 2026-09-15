@@ -17,7 +17,7 @@ jobs:
       - name: Prepare website files
         run: |
           mkdir deploy
-          cp *.html *.js *.css CNAME deploy/
+          cp *.html *.js *.css deploy/
           cp -r bilder ljud deploy/
 
       - name: Upload via SFTP
