@@ -1,0 +1,31 @@
+name: Deploy DataLaget
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare website files
+        run: |
+          mkdir deploy
+          cp *.html *.js *.css CNAME deploy/
+          cp -r bilder ljud deploy/
+
+      - name: Upload via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+          server: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          local_path: ./deploy/*
+          remote_path: ${{ secrets.SFTP_REMOTE_PATH }}
+          sftp_only: true
