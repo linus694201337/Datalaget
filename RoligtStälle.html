@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Roulette | Datalaget</title>
+	<style>
+		:root {
+			--ink: #f8edda;
+			--muted: #c7bba8;
+			--wine: #310d1d;
+			--wine-deep: #180913;
+			--felt: #116b55;
+			--felt-dark: #084738;
+			--gold: #e4b764;
+			--gold-light: #ffdc8d;
+			--red: #c9464f;
+			--black: #17151a;
+		}
+
+		* { box-sizing: border-box; }
+
+		body {
+			min-height: 100vh;
+			margin: 0;
+			color: var(--ink);
+			background:
+				radial-gradient(circle at 50% -10%, #63233d 0, transparent 42%),
+				linear-gradient(135deg, var(--wine-deep), var(--wine) 50%, #250b19);
+			font-family: Georgia, "Times New Roman", serif;
+		}
+
+		button { font: inherit; }
+
+		.page {
+			width: min(1180px, calc(100% - 32px));
+			margin: 0 auto;
+			padding: 28px 0 48px;
+		}
+
+		.topbar {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 20px;
+			margin-bottom: 30px;
+		}
+
+		.brand {
+			color: var(--gold-light);
+			text-decoration: none;
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+			font-size: clamp(0.75rem, 2vw, 0.95rem);
+		}
+
+		.back-link {
+			color: var(--muted);
+			text-decoration: none;
+			font-family: Arial, sans-serif;
+			font-size: 0.8rem;
+		}
+
+		.back-link:hover { color: var(--gold-light); }
+
+		.intro { text-align: center; margin-bottom: 28px; }
+		.eyebrow {
+			margin: 0 0 10px;
+			color: var(--gold);
+			font-family: Arial, sans-serif;
+			font-size: 0.7rem;
+			font-weight: 700;
+			letter-spacing: 0.28em;
+			text-transform: uppercase;
+		}
+
+		h1 {
+			margin: 0;
+			color: #fff5df;
+			font-size: clamp(2.4rem, 7vw, 5rem);
+			font-weight: 400;
+			line-height: 0.95;
+		}
+
+		.subtitle { margin: 14px 0 0; color: var(--muted); font-size: 1rem; }
+
+		.game-layout {
+			display: grid;
+			grid-template-columns: minmax(280px, 0.85fr) minmax(0, 1.15fr);
+			gap: 24px;
+			align-items: start;
+		}
+
+		.table-panel,
+		.case-panel {
+			border: 1px solid rgba(228, 183, 100, 0.38);
+			background: rgba(10, 20, 20, 0.46);
+			box-shadow: 0 22px 60px rgba(0, 0, 0, 0.25);
+		}
+
+		.case-panel { padding: clamp(22px, 4vw, 44px); text-align: center; }
+
+		.case-window {
+			position: relative;
+			overflow: hidden;
+			width: 100%;
+			padding: 12px 0;
+			border: 2px solid var(--gold);
+			background: #0c1717;
+			box-shadow: inset 0 0 28px rgba(0, 0, 0, 0.7), 0 12px 26px rgba(0, 0, 0, 0.32);
+		}
+
+		.case-window::before,
+		.case-window::after {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			z-index: 2;
+			width: 14%;
+			content: "";
+			pointer-events: none;
+		}
+
+		.case-window::before { left: 0; background: linear-gradient(90deg, #0c1717, transparent); }
+		.case-window::after { right: 0; background: linear-gradient(-90deg, #0c1717, transparent); }
+
+		.case-marker {
+			position: absolute;
+			top: -1px;
+			bottom: -1px;
+			left: 50%;
+			z-index: 3;
+			width: 4px;
+			background: var(--gold-light);
+			box-shadow: 0 0 12px var(--gold-light);
+			transform: translateX(-50%);
+		}
+
+		.case-marker::before,
+		.case-marker::after {
+			position: absolute;
+			left: 50%;
+			width: 0;
+			height: 0;
+			content: "";
+			border-right: 8px solid transparent;
+			border-left: 8px solid transparent;
+			transform: translateX(-50%);
+		}
+
+		.case-marker::before { top: 0; border-top: 14px solid var(--gold-light); }
+		.case-marker::after { bottom: 0; border-bottom: 14px solid var(--gold-light); }
+		.case-marker.tick { animation: marker-tick 70ms ease-out; }
+		@keyframes marker-tick {
+			50% { filter: brightness(1.8); transform: translateX(-50%) scaleX(1.8); }
+		}
+
+		.case-track {
+			display: flex;
+			gap: 10px;
+			width: max-content;
+			padding: 0 20px;
+			transform: translateX(0);
+			transition: transform 12s cubic-bezier(0.07, 0.9, 0.12, 1);
+		}
+
+		.case-card {
+			display: grid;
+			place-items: center;
+			width: clamp(68px, 11vw, 102px);
+			height: clamp(84px, 13vw, 118px);
+			flex: 0 0 auto;
+			border: 2px solid rgba(255, 220, 141, 0.55);
+			color: #fff7e7;
+			font-family: Arial, sans-serif;
+			font-size: clamp(1.5rem, 4vw, 2.4rem);
+			font-weight: 800;
+			text-shadow: 0 2px 3px rgba(0, 0, 0, 0.45);
+		}
+
+		.case-card.red { background: linear-gradient(145deg, #d14d58, #84202e); }
+		.case-card.black { background: linear-gradient(145deg, #3e3d45, #111116); }
+		.case-card.green { background: linear-gradient(145deg, #1e9775, #07513f); }
+
+		.result { min-height: 52px; color: var(--muted); }
+		.result strong { color: var(--gold-light); font-size: 1.4rem; }
+
+		.table-panel { padding: 22px; }
+		.balance-row,
+		.bet-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+		.balance-row { padding-bottom: 18px; border-bottom: 1px solid rgba(228, 183, 100, 0.24); }
+		.label { color: var(--muted); font-family: Arial, sans-serif; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; }
+		.balance { color: var(--gold-light); font-size: 1.5rem; }
+
+		.bet-row { flex-wrap: wrap; padding: 18px 0; }
+		.chip-list { display: flex; flex-wrap: wrap; gap: 8px; }
+		.chip {
+			width: 42px;
+			height: 42px;
+			border: 2px dashed currentColor;
+			border-radius: 50%;
+			color: #fff;
+			background: #bb3d53;
+			cursor: pointer;
+			font-size: 0.75rem;
+			font-weight: 700;
+		}
+		.chip:nth-child(2) { background: #2679a7; }
+		.chip:nth-child(3) { background: #d18c2f; }
+		.chip:nth-child(4) { background: #774fa8; }
+		.chip.selected { box-shadow: 0 0 0 3px var(--gold-light); }
+		.bet-mode { display: flex; gap: 6px; margin: 0 0 14px; }
+		.mode-button {
+			flex: 1;
+			padding: 9px 10px;
+			border: 1px solid rgba(228, 183, 100, 0.35);
+			color: var(--muted);
+			background: rgba(0, 0, 0, 0.2);
+			cursor: pointer;
+			font-family: Arial, sans-serif;
+			font-size: 0.72rem;
+			font-weight: 700;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+		}
+		.mode-button.active { border-color: var(--gold-light); color: var(--wine-deep); background: var(--gold-light); }
+
+		.number-grid { display: grid; grid-template-columns: repeat(13, 1fr); gap: 4px; }
+		.bet-button {
+			min-height: 42px;
+			border: 1px solid rgba(255,255,255,0.3);
+			color: #fff;
+			background: var(--black);
+			cursor: pointer;
+			font-size: 0.78rem;
+		}
+		.bet-button.red { background: var(--red); }
+		.bet-button.zero { grid-column: span 13; background: var(--felt-dark); }
+		.bet-button.selected { outline: 3px solid var(--gold-light); outline-offset: -3px; }
+		.bet-button:hover, .bet-button:focus-visible { filter: brightness(1.25); }
+		.bet-button small { display: block; margin-top: 2px; color: var(--gold-light); font-size: 0.62rem; }
+
+		.outside-bets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 4px; }
+		.outside-bets .bet-button { min-height: 45px; background: var(--felt-dark); font-size: 0.7rem; text-transform: uppercase; }
+		.outside-bets .red-bet { background: var(--red); }
+		.outside-bets .black-bet { background: var(--black); }
+
+		.spin-button {
+			width: 100%;
+			margin-top: 22px;
+			padding: 15px;
+			border: 1px solid var(--gold-light);
+			color: var(--wine-deep);
+			background: linear-gradient(135deg, var(--gold-light), var(--gold));
+			cursor: pointer;
+			font-size: 1rem;
+			font-weight: 700;
+			letter-spacing: 0.1em;
+			text-transform: uppercase;
+		}
+		.spin-button:hover, .spin-button:focus-visible { background: #fff1bd; }
+		.spin-button:disabled { cursor: not-allowed; opacity: 0.5; }
+
+		.hint { margin: 16px 0 0; color: var(--muted); font-family: Arial, sans-serif; font-size: 0.75rem; text-align: center; }
+
+		@media (max-width: 780px) {
+			.game-layout { grid-template-columns: 1fr; }
+			.case-panel { order: -1; }
+		}
+
+		@media (max-width: 480px) {
+			.page { width: min(100% - 20px, 1180px); padding-top: 18px; }
+			.number-grid { grid-template-columns: repeat(6, 1fr); }
+			.bet-button.zero { grid-column: span 6; }
+			.bet-button { min-height: 39px; }
+			.case-track { gap: 7px; padding: 0 12px; }
+		}
+	</style>
+</head>
+<body>
+	<main class="page">
+		<nav class="topbar" aria-label="Huvudnavigation">
+			<a class="brand" href="index.html">Datalaget</a>
+			<a class="back-link" href="index.html">Tillbaka till startsidan</a>
+		</nav>
+
+		<header class="intro">
+			<p class="eyebrow">Kvällens spel</p>
+			<h1>Roulette</h1>
+			<p class="subtitle">Lägg din insats. Se vad som landar.</p>
+		</header>
+
+		<section class="game-layout" aria-label="Roulettespel">
+			<section class="case-panel" aria-label="Roulettespel">
+				<div class="case-window">
+					<div class="case-marker" aria-hidden="true"></div>
+					<div class="case-track" id="case-track"></div>
+				</div>
+				<p class="result" id="result" aria-live="polite">Lägg dina insatser och tryck på SNURRA.</p>
+			</section>
+
+			<section class="table-panel" aria-label="Insatsbord">
+				<div class="balance-row">
+					<span class="label">Saldo</span>
+					<strong class="balance" id="balance">1 000 kr</strong>
+				</div>
+
+				<div class="bet-row">
+					<span class="label">Välj marker</span>
+					<div class="chip-list" aria-label="Välj insats">
+						<button class="chip selected" type="button" data-chip="10">10</button>
+						<button class="chip" type="button" data-chip="25">25</button>
+						<button class="chip" type="button" data-chip="50">50</button>
+						<button class="chip" type="button" data-chip="100">100</button>
+					</div>
+				</div>
+				<div class="bet-mode" aria-label="Insatsläge">
+					<button class="mode-button active" type="button" data-mode="add">Lägg till</button>
+					<button class="mode-button" type="button" data-mode="remove">Ta bort</button>
+				</div>
+
+				<div class="number-grid" id="number-grid" aria-label="Nummerinsatser">
+					<button class="bet-button zero" type="button" data-bet="0">0</button>
+				</div>
+				<div class="outside-bets">
+					<button class="bet-button red-bet" type="button" data-bet="red">Rött</button>
+					<button class="bet-button black-bet" type="button" data-bet="black">Svart</button>
+					<button class="bet-button" type="button" data-bet="even">Jämnt</button>
+					<button class="bet-button" type="button" data-bet="odd">Udda</button>
+					<button class="bet-button" type="button" data-bet="low">1–18</button>
+					<button class="bet-button" type="button" data-bet="high">19–36</button>
+				</div>
+
+				<button class="spin-button" id="spin-button" type="button">SNURRA</button>
+				<p class="hint" id="hint">Insats: 10 kr</p>
+			</section>
+		</section>
+	</main>
+
+	<script>
+		const numbers = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
+		const redNumbers = new Set([1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]);
+		const caseTrack = document.getElementById("case-track");
+		const caseWindow = document.querySelector(".case-window");
+		const caseMarker = document.querySelector(".case-marker");
+		const numberGrid = document.getElementById("number-grid");
+		const balanceElement = document.getElementById("balance");
+		const resultElement = document.getElementById("result");
+		const hintElement = document.getElementById("hint");
+		const spinButton = document.getElementById("spin-button");
+		const dailyPot = 1000;
+		const balanceStorageKey = "datalaget-roulette-daily-pot";
+		const today = new Date().toISOString().slice(0, 10);
+		const savedBalance = JSON.parse(localStorage.getItem(balanceStorageKey) || "null");
+		let balance = savedBalance?.date === today && Number.isFinite(savedBalance.balance) ? savedBalance.balance : dailyPot;
+		let chipValue = 10;
+		let betMode = "add";
+		const bets = new Map();
+		let audioContext;
+		const spinDuration = 11000;
+
+		function saveBalance() {
+			localStorage.setItem(balanceStorageKey, JSON.stringify({ date: today, balance }));
+		}
+
+		const caseTargetIndex = 55;
+
+		function colorClass(number) {
+			return number === 0 ? "green" : redNumbers.has(number) ? "red" : "black";
+		}
+
+		function buildCase(result = Math.floor(Math.random() * 37)) {
+			caseTrack.innerHTML = "";
+			const resultIndex = numbers.indexOf(result);
+			for (let index = 0; index < 72; index += 1) {
+				const wheelIndex = (resultIndex + index - caseTargetIndex + numbers.length * 2) % numbers.length;
+				const number = numbers[wheelIndex];
+				const card = document.createElement("div");
+				card.className = `case-card ${colorClass(number)}`;
+				card.textContent = number;
+				caseTrack.appendChild(card);
+			}
+			caseTrack.style.transition = "none";
+			caseTrack.style.transform = "translateX(0)";
+			requestAnimationFrame(() => { caseTrack.style.transition = ""; });
+		}
+
+		function setCaseResult(result) {
+			const targetCard = caseTrack.children[caseTargetIndex];
+			const cardWidth = targetCard.getBoundingClientRect().width;
+			const gap = Number.parseFloat(getComputedStyle(caseTrack).gap);
+			const padding = Number.parseFloat(getComputedStyle(caseTrack).paddingLeft);
+			const targetCenter = padding + caseTargetIndex * (cardWidth + gap) + cardWidth / 2;
+			const finalOffset = caseWindow.clientWidth / 2 - targetCenter;
+			caseTrack.style.transform = `translateX(${finalOffset}px)`;
+		}
+
+		balanceElement.textContent = formatMoney(balance);
+		buildCase();
+
+		for (let number = 1; number <= 36; number += 1) {
+			const button = document.createElement("button");
+			button.className = `bet-button ${redNumbers.has(number) ? "red" : ""}`;
+			button.type = "button";
+			button.dataset.bet = number;
+			button.textContent = number;
+			numberGrid.appendChild(button);
+		}
+
+		function formatMoney(value) {
+			return `${value.toLocaleString("sv-SE")} kr`;
+		}
+
+		function betLabel(bet) {
+			return bet === "red" ? "rött" : bet === "black" ? "svart" : bet === "even" ? "jämnt" : bet === "odd" ? "udda" : bet === "low" ? "1–18" : bet === "high" ? "19–36" : bet;
+		}
+
+		function totalBets() {
+			return [...bets.values()].reduce((total, amount) => total + amount, 0);
+		}
+
+		function renderBets() {
+			document.querySelectorAll(".bet-button").forEach((button) => {
+				const amount = bets.get(button.dataset.bet) || 0;
+				button.classList.toggle("selected", amount > 0);
+				button.innerHTML = button.dataset.label;
+				if (amount > 0) button.innerHTML += `<small>${formatMoney(amount)}</small>`;
+			});
+			hintElement.textContent = totalBets() > 0 ? `Totalt på bordet: ${formatMoney(totalBets())}` : betMode === "add" ? `Insats: ${formatMoney(chipValue)}` : "Välj en plats för att ta bort insats";
+		}
+
+		function chooseBet(event) {
+			if (spinButton.disabled) return;
+			const bet = event.currentTarget.dataset.bet;
+			const currentAmount = bets.get(bet) || 0;
+			if (betMode === "remove") {
+				const remaining = currentAmount - chipValue;
+				if (remaining > 0) bets.set(bet, remaining);
+				else bets.delete(bet);
+				renderBets();
+				return;
+			}
+			if (totalBets() + chipValue > balance) {
+				resultElement.textContent = `Insatsen kan inte överstiga saldot på ${formatMoney(balance)}.`;
+				return;
+			}
+			bets.set(bet, currentAmount + chipValue);
+			renderBets();
+		}
+
+		document.querySelectorAll(".bet-button").forEach((button) => {
+			button.dataset.label = button.textContent;
+		});
+		document.querySelectorAll(".chip").forEach((chip) => chip.addEventListener("click", () => {
+			document.querySelectorAll(".chip").forEach((item) => item.classList.remove("selected"));
+			chip.classList.add("selected");
+			chipValue = Number(chip.dataset.chip);
+			renderBets();
+		}));
+		document.querySelectorAll(".mode-button").forEach((button) => button.addEventListener("click", () => {
+			betMode = button.dataset.mode;
+			document.querySelectorAll(".mode-button").forEach((item) => item.classList.toggle("active", item === button));
+			renderBets();
+		}));
+		document.querySelectorAll(".bet-button").forEach((button) => button.addEventListener("click", chooseBet));
+
+		function payoutFor(bet, result, amount) {
+			if (bet === String(result)) return amount * 36;
+			if (result === 0) return 0;
+			if (bet === "red" && redNumbers.has(result)) return amount * 2;
+			if (bet === "black" && !redNumbers.has(result)) return amount * 2;
+			if (bet === "even" && result % 2 === 0) return amount * 2;
+			if (bet === "odd" && result % 2 !== 0) return amount * 2;
+			if (bet === "low" && result <= 18) return amount * 2;
+			if (bet === "high" && result >= 19) return amount * 2;
+			return 0;
+		}
+
+		function tick() {
+			if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+			if (audioContext.state === "suspended") audioContext.resume();
+			const oscillator = audioContext.createOscillator();
+			const gain = audioContext.createGain();
+			oscillator.type = "square";
+			oscillator.frequency.value = 740;
+			gain.gain.setValueAtTime(0.045, audioContext.currentTime);
+			gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.035);
+			oscillator.connect(gain).connect(audioContext.destination);
+			oscillator.start();
+			oscillator.stop(audioContext.currentTime + 0.04);
+		}
+
+		function tickLoop(startTime) {
+			const elapsed = performance.now() - startTime;
+			if (elapsed >= spinDuration) return;
+			tick();
+			caseMarker.classList.remove("tick");
+			void caseMarker.offsetWidth;
+			caseMarker.classList.add("tick");
+			const progress = elapsed / spinDuration;
+			const delay = 105 + Math.pow(progress, 3) * 680;
+			window.setTimeout(() => tickLoop(startTime), delay);
+		}
+
+		spinButton.addEventListener("click", () => {
+			const stake = totalBets();
+			if (!stake || stake > balance) {
+				resultElement.textContent = stake ? "Du har inte tillräckligt saldo för insatserna." : "Lägg minst en marker på bordet först.";
+				return;
+			}
+
+			spinButton.disabled = true;
+			balance -= stake;
+			saveBalance();
+			balanceElement.textContent = formatMoney(balance);
+			const result = Math.floor(Math.random() * 37);
+			buildCase(result);
+			requestAnimationFrame(() => setCaseResult(result));
+			resultElement.textContent = "Rouletten snurrar...";
+			tickLoop(performance.now());
+
+			window.setTimeout(() => {
+				const payout = [...bets.entries()].reduce((total, [bet, amount]) => total + payoutFor(bet, result, amount), 0);
+				if (payout > 0) {
+					balance += payout;
+					resultElement.innerHTML = `Det blev <strong>${result}</strong> – snyggt! Du vann ${formatMoney(payout)}.`;
+				} else {
+					resultElement.innerHTML = `Det blev <strong>${result}</strong> – bättre lycka nästa gång.`;
+				}
+				saveBalance();
+				balanceElement.textContent = formatMoney(balance);
+				bets.clear();
+				renderBets();
+				spinButton.disabled = false;
+			}, spinDuration + 100);
+		});
+	</script>
+</body>
+</html>

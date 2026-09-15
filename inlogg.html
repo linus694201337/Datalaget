@@ -23,17 +23,66 @@
             height: 100vh;
             object-fit: contain;
         }
+
+        #start-music {
+            position: fixed;
+            left: 50%;
+            bottom: 2rem;
+            transform: translateX(-50%);
+            padding: 0.8rem 1.2rem;
+            border: 1px solid #fff;
+            border-radius: 0.35rem;
+            background: rgba(0, 0, 0, 0.75);
+            color: #fff;
+            font: inherit;
+            cursor: pointer;
+        }
+
+        #start-music[hidden] {
+            display: none;
+        }
+
+        #secret-link {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 4rem;
+            height: 4rem;
+            z-index: 2;
+            opacity: 0;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <img src="bilder/fucku.gif" alt="">
+    <button id="secret-link" type="button" aria-label="Gå till startsidan"></button>
     <audio id="background-music" autoplay loop>
         <source src="ljud/musik.mp3" type="audio/mpeg">
     </audio>
+    <button id="start-music" type="button">Tryck för att starta ljudet</button>
     <script>
         const backgroundMusic = document.getElementById("background-music");
-        backgroundMusic.volume = 1;
-        backgroundMusic.play().catch(() => {});
+        const startMusicButton = document.getElementById("start-music");
+        const secretLink = document.getElementById("secret-link");
+
+        secretLink.addEventListener("click", () => {
+            window.location.href = "RoligtStälle.html";
+        });
+
+        function startMusic() {
+            backgroundMusic.volume = 1;
+            backgroundMusic.play()
+                .then(() => {
+                    startMusicButton.hidden = true;
+                })
+                .catch(() => {
+                    startMusicButton.hidden = false;
+                });
+        }
+
+        startMusicButton.addEventListener("click", startMusic);
+        startMusic();
     </script>
 </body>
 </html>
