@@ -25,11 +25,13 @@ jobs:
 
       - name: Upload via SFTP
         env:
-          SFTP_HOST: ${{ secrets.SFTP_HOST }}
-          SFTP_USERNAME: ${{ secrets.SFTP_USERNAME }}
           SSHPASS: ${{ secrets.SFTP_PASSWORD }}
         run: |
           set -euo pipefail
+          if [[ -z "${SSHPASS:-}" ]]; then
+            echo 'SFTP_PASSWORD secret is missing or empty.' >&2
+            exit 1
+          fi
           sftp_batch=$(mktemp)
           trap 'rm -f "$sftp_batch"' EXIT
           printf '%s\n' \
@@ -41,4 +43,4 @@ jobs:
             -oStrictHostKeyChecking=no \
             -oUserKnownHostsFile=/dev/null \
             -b "$sftp_batch" \
-            -P 22 "$SFTP_USERNAME@$SFTP_HOST"
+            -P 22 "linus69420@ssh.ludd.ltu.se"
