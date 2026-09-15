@@ -263,7 +263,11 @@
 
 		.hint { margin: 16px 0 0; color: var(--muted); font-family: Arial, sans-serif; font-size: 0.75rem; text-align: center; }
 
-		@media (max-width: 780px) {
+		.orientation-message {
+			display: none;
+		}
+
+		@media (max-width: 900px) {
 			.game-layout { grid-template-columns: 1fr; }
 			.case-panel { order: -1; }
 		}
@@ -275,9 +279,106 @@
 			.bet-button { min-height: 39px; }
 			.case-track { gap: 7px; padding: 0 12px; }
 		}
+
+		@media (max-width: 900px) and (orientation: portrait) {
+			body { overflow: hidden; }
+			.page { display: none; }
+			.orientation-message {
+				position: fixed;
+				inset: 0;
+				display: grid;
+				place-items: center;
+				padding: 28px;
+				text-align: center;
+				background:
+					radial-gradient(circle at 50% 0, #63233d 0, transparent 55%),
+					linear-gradient(135deg, var(--wine-deep), var(--wine));
+			}
+			.orientation-content { max-width: 360px; }
+			.orientation-icon {
+				display: block;
+				margin-bottom: 22px;
+				color: var(--gold-light);
+				font-family: Arial, sans-serif;
+				font-size: 3.2rem;
+				line-height: 1;
+			}
+			.orientation-message h2 {
+				margin: 0;
+				color: #fff5df;
+				font-size: 2rem;
+				font-weight: 400;
+			}
+			.orientation-message p {
+				margin: 12px 0 0;
+				color: var(--muted);
+				font-family: Arial, sans-serif;
+				line-height: 1.5;
+			}
+		}
+
+		@media (max-width: 900px) and (orientation: landscape) {
+			html,
+			body { overflow: hidden; }
+			.page {
+				width: calc(100% - 20px);
+				height: 100vh;
+				overflow: hidden;
+				padding: 10px 0 4px;
+			}
+			.topbar { margin-bottom: 8px; }
+			.brand { font-size: 0.68rem; }
+			.back-link { font-size: 0.68rem; }
+			.intro {
+				position: absolute;
+				top: 42px;
+				left: 10px;
+				z-index: 4;
+				width: calc((100vw - 44px) * 0.56);
+				margin: 0;
+				pointer-events: none;
+			}
+			.eyebrow,
+			.subtitle { display: none; }
+			.intro h1 { font-size: clamp(1.5rem, 5vw, 2.5rem); }
+			.game-layout {
+				grid-template-columns: minmax(0, 1.3fr) minmax(250px, 0.9fr);
+				gap: 10px;
+				align-items: stretch;
+			}
+			.case-panel { min-width: 0; padding: 18px 10px 8px; }
+			.case-window { margin-top: 42px; padding: 7px 0; }
+			.case-track { gap: 6px; padding: 0 10px; }
+			.case-card { width: clamp(54px, 8vw, 76px); height: clamp(62px, 18vh, 86px); font-size: clamp(1.2rem, 3vw, 1.8rem); }
+			.result { min-height: 24px; margin: 7px 0 0; font-size: 0.68rem; }
+			.result strong { font-size: 0.95rem; }
+			.table-panel { padding: 10px; }
+			.balance-row { padding-bottom: 7px; }
+			.balance { font-size: 1rem; }
+			.bet-row { padding: 7px 0; gap: 8px; }
+			.label { font-size: 0.56rem; }
+			.chip-list { gap: 4px; }
+			.chip { width: 29px; height: 29px; font-size: 0.58rem; }
+			.bet-mode { gap: 4px; margin-bottom: 6px; }
+			.mode-button { padding: 5px; font-size: 0.56rem; }
+			.number-grid { gap: 2px; }
+			.bet-button { min-width: 0; min-height: 25px; padding: 0; font-size: 0.5rem; white-space: nowrap; }
+			.bet-button small { margin-top: 0; font-size: 0.46rem; }
+			.outside-bets { gap: 2px; margin-top: 2px; }
+			.outside-bets .bet-button { min-height: 28px; font-size: 0.5rem; }
+			.spin-button { margin-top: 8px; padding: 8px; font-size: 0.72rem; }
+			.hint { margin: 6px 0 0; font-size: 0.55rem; }
+		}
 	</style>
 </head>
 <body>
+	<div class="orientation-message" role="status">
+		<div class="orientation-content">
+			<span class="orientation-icon" aria-hidden="true">↔</span>
+			<h2>Vänd telefonen</h2>
+			<p>Roulette spelas bäst i liggande läge. Vrid telefonen för att börja spela.</p>
+		</div>
+	</div>
 	<main class="page">
 		<nav class="topbar" aria-label="Huvudnavigation">
 			<a class="brand" href="index.html">Datalaget</a>
