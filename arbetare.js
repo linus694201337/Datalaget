@@ -4,9 +4,15 @@ const arbetareData = [
         { namn: "Teo Andrews", datum: "13/05 2026 - "},
         { namn: "Isaac Edwards", datum: "13/04 2024 - "},
         { namn: "Kasper Wieser", datum: "13/12 2025 -"},
+<<<<<<< HEAD
         { namn: "Emma Edh", datum: "13/12 2025 -"},
         { namn: "Sebastian ”Zleb” Samuelsson", datum: "14/12 2024 - ", roll: "VLC: 2026 -"},
         { namn: "Hugo ”Plåten” Söderström", datum: "14/12 2024 - "},
+=======
+        { namn: "Emma Edh", datum: "14/12 2025 -"},
+        { namn: "Sebastian ”Zleb” Samuelsson", datum: "2025 - ", roll: "VLC: 2026 -"},
+        { namn: "Hugo ”Plåten” Söderström", datum: "2025 - "},
+>>>>>>> d46ec78c97012138f0c0b958da3e74bec663c693
         { namn: "Erik ”Bosse” Boson", datum: "04/04 2019 - 18/01 2025", roll: "LC: 2019 -2025"},
         { namn: "Gustav ”Militär” Törnqvist", datum: "02/09 2022 -", roll: "VLC: 2023 - 2024" },
         { namn: "Jesper Persson", datum: "06/12 2023 - 09/04 2025"},
