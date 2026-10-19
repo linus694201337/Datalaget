@@ -1,9 +1,9 @@
 const arbetareData = [
         { namn: "Anton Kronqvist", datum: "28/03 2026 -"},
         { namn: "Linus Wohrne", datum: "13/12 2025 -"},
-        { namn: "Teo Andrews", datum: "13/05 2026 - "},
+        { namn: "Teo ”Nitlott (han e ginger, lettisk, amerikan, dyslektisk, autist, indek, datalagare, invandrare/babbe och tattare)” Andrews", datum: "13/05 2026 - "},
         { namn: "Isaac Edwards", datum: "13/04 2024 - "},
-        { namn: "Kasper Wieser", datum: "13/12 2025 -"},
+        { namn: "Kasper ”HalsGet” Wieser", datum: "13/12 2025 -"},
         { namn: "Emma Edh", datum: "13/12 2025 -"},
         { namn: "Sebastian ”Zleb” Samuelsson", datum: "14/12 2024 - ", roll: "VLC: 2026 -"},
         { namn: "Hugo ”Plåten” Söderström", datum: "14/12 2024 - "},
