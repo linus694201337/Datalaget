@@ -7,7 +7,14 @@ arbetspassData["26-27"] = {
         "Vanlig onsdag 7/10",
         "Vanlig lördag 17/10"
     ],
-    "LP 2": [],
+    "LP 2": [
+        "Vanlig Onsdag 11/11",
+        "Prepp Akademiska 13/11",
+        "Akademiska 14/11",
+        "Fejden Fredag :) 27/11",
+        "Julbordet 12/12",
+        "Tentaröj 16/1"
+    ],
     "LP 3": [],
     "LP 4": []
 }
